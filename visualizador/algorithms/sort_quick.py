@@ -1,93 +1,53 @@
-# QuickSort — versión paso a paso adaptada al template
-# Contrato: init(vals), step() -> {"a": int, "b": int, "swap": bool, "done": bool}
+# QuickSort con registro completo de pasos para visualización
 
-items = []
-n = 0
+items = [64, 25, 12, 22, 11]  # lista inicial
+steps = []  # aquí guardaremos cada paso como dict {"a", "b", "swap", "items"}
 
-# Estado del algoritmo
-stack = []      # pila de rangos (low, high)
-low = 0
-high = 0
-pivot = 0
-i = 0
-j = 0
-fase = ""       # "inicio", "comparacion", "pivot_swap"
+def quicksort(arr, low, high):
+    if low < high:
+        # dividir
+        pi = partition(arr, low, high)
+        # ordenar recursivamente izquierda y derecha
+        quicksort(arr, low, pi - 1)
+        quicksort(arr, pi + 1, high)
 
-
-def init(vals):
-    global items, n, stack, fase, low, high, i, j, pivot
-    items = list(vals)
-    n = len(items)
-
-    # comenzamos con un solo rango: la lista entera
-    stack = [(0, n - 1)]
-
-    fase = "inicio"  # siguiente step inicia nueva partición
-    low = high = pivot = 0
-    i = j = 0
-
-
-def step():
-    global items, n, stack
-    global low, high, pivot, i, j, fase
-
-    # Si ya no hay más rangos → terminado
-    if not stack:
-        return {"done": True}
-
-    # -------------------------------
-    # 1) INICIO DE PARTICIÓN
-    # -------------------------------
-    if fase == "inicio":
-        low, high = stack.pop()
-
-        # rangos inválidos o triviales (1 elemento)
-        if low >= high:
-            fase = "inicio"
-            return {"a": low, "b": high, "swap": False, "done": False}
-
-        pivot = items[high]  # elegimos pivote = último elemento
-
-        i = low               # zona para menores
-        j = low               # puntero de recorrido
-
-        fase = "comparacion"
-        return {"a": j, "b": high, "swap": False, "done": False}
-
-    # -------------------------------
-    # 2) COMPARACIÓN Y SWAPS INTERNOS
-    # -------------------------------
-    if fase == "comparacion":
-
-        # ¿ya terminamos de recorrer?
-        if j >= high:
-            fase = "pivot_swap"
-            return {"a": i, "b": high, "swap": False, "done": False}
-
-        a = j
-        b = high
-        swap = False
-
-        # comparo con el pivote
-        if items[j] < pivot:
-            items[i], items[j] = items[j], items[i]
-            swap = True
+def partition(arr, low, high):
+    pivot = arr[high]
+    i = low
+    for j in range(low, high):
+        # registrar la comparación
+        steps.append({
+            "a": j,
+            "b": high,
+            "swap": False,
+            "items": arr.copy()
+        })
+        if arr[j] < pivot:
+            arr[i], arr[j] = arr[j], arr[i]
+            # registrar el swap
+            steps.append({
+                "a": i,
+                "b": j,
+                "swap": True,
+                "items": arr.copy()
+            })
             i += 1
+    # swap del pivote
+    arr[i], arr[high] = arr[high], arr[i]
+    steps.append({
+        "a": i,
+        "b": high,
+        "swap": True,
+        "items": arr.copy()
+    })
+    return i
 
-        j += 1
+# ejecutar QuickSort
+quicksort(items, 0, len(items) - 1)
 
-        return {"a": a, "b": b, "swap": swap, "done": False}
+# mostrar resultado final
+print("Lista ordenada:", items)
+print("\nPasos para visualización:")
+for s in steps:
+    print(s)
 
-    # -------------------------------
-    # 3) SWAP FINAL CON EL PIVOTE
-    # -------------------------------
-    if fase == "pivot_swap":
-        items[i], items[high] = items[high], items[i]
-
-        # agregar rangos nuevos para ordenar
-        stack.append((low, i - 1))
-        stack.append((i + 1, high))
-
-        fase = "inicio"
-
-        return {"a": i, "b": high, "swap": True, "done": False}
