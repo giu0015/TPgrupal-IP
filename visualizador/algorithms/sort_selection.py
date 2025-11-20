@@ -105,3 +105,4 @@ def step():
             # devolvemos los índices (aunque swap=False)
             # esto permite que el visualizador destaque la posición fija
             return {"a": a, "b": b, "swap": False, "done": False}
+            
