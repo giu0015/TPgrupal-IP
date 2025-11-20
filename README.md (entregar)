@@ -1,0 +1,17 @@
+TP - Visualización de Algoritmos de Ordenamiento
+
+INTEGRANTES:
+- Galeano Liz
+- Moreno Giuliana
+- Poisa Ariana
+
+
+ALGORITMOS IMPLEMENTADOS:
+Dentro de la carpeta "/algorithms/" se implementaron los siguientes algoritmos:
+- "sort_bubble.py" — Bubble Sort
+- "sort_insertion.py" — Insertion Sort
+- "sort_quick.py" — Quick Sort
+- "sort_selection.py" — Selection Sort
+
+
+NOTAS SOBRE DECISIONES DE IMPLEMENTACIÓN:
