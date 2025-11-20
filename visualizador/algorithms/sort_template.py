@@ -3,19 +3,43 @@
 
 items = []
 n = 0
-# Agregá acá tus punteros/estado, p.ej.:
-# i = 0; j = 0; fase = "x"; stack = []
+
+# Estado del algoritmo (Bubble Sort)
+i = 0   # pasada actual
+j = 0   # índice dentro de la pasada
+
 
 def init(vals):
-    global items, n
-    items = list(vals)
-    n = len(items)
-    # TODO: inicializar punteros/estado
+    global items, n, i, j
+    items = list(vals)      # copiamos la lista
+    n = len(items)          # cantidad de elementos
+    i = 0                   # reiniciamos pasada
+    j = 0                   # reiniciamos índice
+
 
 def step():
-    # TODO: implementar UN micro-paso de tu algoritmo y devolver el dict.
-    # Recordá:
-    # - a, b dentro de [0, n-1]
-    # - si swap=True, primero hacé el intercambio en 'items'
-    # - cuando termines, devolvé {"done": True}
-    return {"done": True}
+    global items, n, i, j
+
+    # Si terminamos todas las pasadas → done
+    if i >= n - 1:
+        return {"done": True}
+
+    # Comparación actual
+    a = j
+    b = j + 1
+
+    # ¿Hay swap?
+    swap = False
+    if items[a] > items[b]:
+        items[a], items[b] = items[b], items[a]
+        swap = True
+
+    # Avanzamos punteros
+    j += 1
+    if j >= n - 1 - i:
+        j = 0
+        i += 1
+
+    # Devolver el micro-paso
+    return {"a": a, "b": b,"swap": swap,  "done": False}
+            
