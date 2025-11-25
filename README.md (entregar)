@@ -15,3 +15,9 @@ Dentro de la carpeta "/algorithms/" se implementaron los siguientes algoritmos:
 
 
 NOTAS SOBRE DECISIONES DE IMPLEMENTACIÓN:
+Para cada algoritmo trabajamos en: 
+- definir variables que avancen paso a paso, 
+- controlar los límites de la lista para evitar errores, 
+- realizar los intercambios y devolver siempre la información al visualizador. 
+Para lograrlo, tuvimos que pensar bien qué variables usa cada algoritmo, cómo avanzan
+ las variables y en qué momento debe hacerse cada comparación o intercambio.
