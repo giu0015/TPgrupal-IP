@@ -20,4 +20,4 @@ Para cada algoritmo trabajamos en:
 - controlar los límites de la lista para evitar errores, 
 - realizar los intercambios y devolver siempre la información al visualizador. 
 Para lograrlo, tuvimos que pensar bien qué variables usa cada algoritmo, cómo avanzan
- las variables y en qué momento debe hacerse cada comparación o intercambio.
+las variables y en qué momento debe hacerse cada comparación o intercambio.
