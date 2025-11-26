@@ -1,4 +1,4 @@
-# QuickSort paso a paso (versión corregida)
+# Quick_Sort 
 
 items = []
 stack = []          # Pila con (left, right)
@@ -28,7 +28,7 @@ def step():
     if done:
         return {"done": True}
 
-    # Si no quedan segmentos → terminó
+    # Si no quedan segmentos, se debe terminar
     if not stack and state is None:
         done = True
         return {"done": True}
@@ -58,7 +58,7 @@ def step():
                 j += 1
                 return {"a": j-1, "b": None, "swap": False, "done": False}
 
-        # Si j llegó al final → colocar el pivote
+        # Si j llegó al final, se debe colocar el pivote
         items[i+1], items[current_right] = items[current_right], items[i+1]
         piv_idx = i + 1
 
