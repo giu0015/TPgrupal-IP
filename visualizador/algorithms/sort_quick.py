@@ -1,74 +1,76 @@
-# Quick_Sort 
+# Quick_Sort paso a paso
 
 items = []
-stack = []          # Pila con (left, right)
+rangos = []          # Pila con (left, right)
 i = j = pivot = None
-current_left = current_right = None
-state = None
+current_izquierda = current_derecha = None
+estado = None
 done = False
 
 
 def init(vals):
-    global items, stack, i, j, pivot, state, done
-    global current_left, current_right
+    global items, rangos, i, j, pivot, estado, done
+    global current_izquierda, current_derecha
 
     items = list(vals)
-    stack = [(0, len(items) - 1)]   # Segmento inicial
+    rangos = [(0, len(items) - 1)]   # Segmento inicial
     i = j = pivot = None
-    current_left = current_right = None
-    state = None
+    current_izquierda = current_derecha = None
+    estado = None
     done = False
 
 
 def step():
-    global items, stack, i, j, pivot, state, done
-    global current_left, current_right
+    global items, rangos, i, j, pivot, estado, done
+    global current_izquierda, current_derecha
 
     # Si ya terminó todo
     if done:
         return {"done": True}
 
-    # Si no quedan segmentos, se debe terminar
-    if not stack and state is None:
+    # Si no quedan segmentos pendientes
+    if not rangos and estado is None:
         done = True
         return {"done": True}
 
-    # Inicio de nuevo segmento
-    if state is None:
-        current_left, current_right = stack.pop()
-        pivot = items[current_right]
-        i = current_left - 1
-        j = current_left
-        state = "partition"
-        return {"a": current_right, "b": j, "swap": False, "done": False}
+    # Inicio de un nuevo segmento
+    if estado is None:
+        current_izquierda, current_derecha = rangos.pop()
+        pivot = items[current_derecha]
+        i = current_izquierda - 1
+        j = current_izquierda
+        estado = "partition"
+        return {"a": current_derecha, "b": j, "swap": False, "done": False}
 
     # Fase de partición
-    if state == "partition":
+    if estado == "partition":
 
-        # Mientras j no llegó al pivote
-        if j < current_right:
+        # j todavía no llegó al pivote
+        if j < current_derecha:
 
+            # Si el elemento es <= pivote → va al sector menor
             if items[j] <= pivot:
                 i += 1
                 items[i], items[j] = items[j], items[i]
                 j += 1
                 return {"a": i, "b": j-1, "swap": True, "done": False}
 
+            # Si es > pivote → solo avanzar
             else:
                 j += 1
                 return {"a": j-1, "b": None, "swap": False, "done": False}
 
-        # Si j llegó al final, se debe colocar el pivote
-        items[i+1], items[current_right] = items[current_right], items[i+1]
-        piv_idx = i + 1
+        # Cuando j termina → fijar el pivote en su posición final
+        items[i+1], items[current_derecha] = items[current_derecha], items[i+1]
+        pos_fija = i + 1
 
         # Agregar subsegmentos
-        if piv_idx - 1 > current_left:
-            stack.append((current_left, piv_idx - 1))
+        if pos_fija - 1 > current_izquierda:
+            rangos.append((current_izquierda, pos_fija - 1))
 
-        if piv_idx + 1 < current_right:
-            stack.append((piv_idx + 1, current_right))
+        if pos_fija + 1 < current_derecha:
+            rangos.append((pos_fija + 1, current_derecha))
 
-        # Prepararse para el siguiente segmento
-        state = None
-        return {"a": piv_idx, "b": current_right, "swap": True, "done": False}
+        # Termina partición → próximo segmento
+        estado = None
+        return {"a": pos_fija, "b": current_derecha, "swap": True, "done": False}
